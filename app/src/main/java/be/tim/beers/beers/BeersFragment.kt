@@ -1,4 +1,4 @@
-package be.tim.beers
+package be.tim.beers.beers
 
 import android.os.Bundle
 import android.util.Log
@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import be.tim.beers.R
 import be.tim.beers.data.*
 import be.tim.beers.data.local.SessionManager
 import be.tim.beers.data.remote.ApiClient
@@ -21,12 +24,20 @@ class BeersFragment : Fragment() {
     private lateinit var apiClient: ApiClient
     private lateinit var sessionManager: SessionManager
 
+    private lateinit var rvBeers : RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.beers_frag, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        rvBeers = view.findViewById<View>(R.id.rv_beers) as RecyclerView
+        rvBeers.layoutManager = LinearLayoutManager(view.context)
     }
 
     override fun onResume() {
@@ -76,6 +87,8 @@ class BeersFragment : Fragment() {
                 val beers = response.data
 
                 Log.d(TAG, "Get beers success: loaded ${beers.size} beers")
+
+                rvBeers.adapter = BeersAdapter(beers)
             }
         })
     }
