@@ -9,5 +9,14 @@
         android:id="@+id/beersFragment"
         android:name="be.tim.beers.BeersFragment"
         android:label="beers_frag"
-        tools:layout="@layout/beers_frag" />
+        tools:layout="@layout/beers_frag" >
+        <action
+            android:id="@+id/action_beersFragment_to_beersDetailFragment"
+            app:destination="@id/beersDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/beersDetailFragment"
+        android:name="be.tim.beers.BeersDetailFragment"
+        android:label="beerdetail_frag"
+        tools:layout="@layout/beerdetail_frag" />
 </navigation>
