@@ -6,19 +6,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import be.tim.beers.data.*
+import be.tim.beers.data.remote.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.*
 
 
 class BeersFragment : Fragment() {
 
     private val TAG = BeersFragment::class.qualifiedName
+
+    private lateinit var apiClient: ApiClient
+    private lateinit var sessionManager: SessionManager
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,48 +38,42 @@ class BeersFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        apiClient = ApiClient()
+        sessionManager = SessionManager(requireContext())
+
         // TODO: 05/11/2020  check if a stored token exists
-        login()
+        val authToken = sessionManager.fetchAuthToken()
+        if (authToken == null) {
+            login()
+        } else {
+            getBeers(authToken)
+        }
     }
 
     private fun login() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(" https://icapps-nodejs-beers-api.herokuapp.com/api/v1/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service: BeerService = retrofit.create(BeerService::class.java)
-
         val userInfo = UserInfo( userName = "star_developer@icapps.com", password = "developer")
-        val repo: Call<LoginResponse> = service.login(userInfo)
-
-        repo.enqueue(object : Callback<LoginResponse> {
+        apiClient.getApiService().login(userInfo).enqueue(object : Callback<LoginResponse> {
             override fun onFailure(call: Call<LoginResponse>?, t: Throwable?) {
                 Log.d(TAG, "Login call failed")
             }
 
             override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
-                val response = response!!.body() as LoginResponse
-                val token = response.data.accessToken
-                Log.d(TAG, "Login success with token: $token")
+                if (response?.code() == 200) {
+                    val response = response.body() as LoginResponse
+                    val token = response.data.accessToken
+                    sessionManager.saveAuthToken(token)
+                    Log.d(TAG, "Login success with token: $token")
 
-                getBeers(token)
+                    getBeers(token)
+                } else {
+                    // TODO: 05/11/2020 handle error
+                }
             }
         })
     }
 
     private fun getBeers(token: String) {
-        // TODO: 05/11/2020 extract
-        val retrofit = Retrofit.Builder()
-            .baseUrl(" https://icapps-nodejs-beers-api.herokuapp.com/api/v1/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service: BeerService = retrofit.create(BeerService::class.java)
-
-        val repo: Call<BeersResponseWrapper> = service.getBeers("Bearer $token")
-
-        repo.enqueue(object : Callback<BeersResponseWrapper> {
+        apiClient.getApiService().getBeers("Bearer $token").enqueue(object : Callback<BeersResponseWrapper> {
             override fun onFailure(call: Call<BeersResponseWrapper>?, t: Throwable?) {
                 Log.d(TAG, "Get beers call failed")
             }
@@ -91,15 +86,4 @@ class BeersFragment : Fragment() {
             }
         })
     }
-}
-
-// TODO: 05/11/2020  extract
-interface BeerService {
-    @Headers("Content-Type: application/json")
-    @POST("auth/login")
-    fun login(@Body userInfo: UserInfo) : Call<LoginResponse>
-
-    @GET("beers")
-    fun getBeers(@Header("Authorization") token: String) : Call<BeersResponseWrapper>
-
 }
