@@ -41,7 +41,6 @@ class BeersFragment : Fragment() {
         apiClient = ApiClient()
         sessionManager = SessionManager(requireContext())
 
-        // TODO: 05/11/2020  check if a stored token exists
         val authToken = sessionManager.fetchAuthToken()
         if (authToken == null) {
             login()
