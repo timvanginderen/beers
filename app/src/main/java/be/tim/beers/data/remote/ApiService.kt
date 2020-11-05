@@ -12,5 +12,5 @@ interface ApiService {
     fun login(@Body userInfo: UserInfo) : Call<LoginResponse>
 
     @GET("beers")
-    fun getBeers(@Header("Authorization") token: String) : Call<BeersResponseWrapper>
+    fun getBeers() : Call<BeersResponseWrapper>
 }

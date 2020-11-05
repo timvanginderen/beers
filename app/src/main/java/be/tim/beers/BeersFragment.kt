@@ -46,13 +46,13 @@ class BeersFragment : Fragment() {
         if (authToken == null) {
             login()
         } else {
-            getBeers(authToken)
+            getBeers()
         }
     }
 
     private fun login() {
         val userInfo = UserInfo( userName = "star_developer@icapps.com", password = "developer")
-        apiClient.getApiService().login(userInfo).enqueue(object : Callback<LoginResponse> {
+        apiClient.getApiService(requireContext()).login(userInfo).enqueue(object : Callback<LoginResponse> {
             override fun onFailure(call: Call<LoginResponse>?, t: Throwable?) {
                 Log.d(TAG, "Login call failed")
             }
@@ -64,7 +64,7 @@ class BeersFragment : Fragment() {
                     sessionManager.saveAuthToken(token)
                     Log.d(TAG, "Login success with token: $token")
 
-                    getBeers(token)
+                    getBeers()
                 } else {
                     // TODO: 05/11/2020 handle error
                 }
@@ -72,8 +72,8 @@ class BeersFragment : Fragment() {
         })
     }
 
-    private fun getBeers(token: String) {
-        apiClient.getApiService().getBeers("Bearer $token").enqueue(object : Callback<BeersResponseWrapper> {
+    private fun getBeers() {
+        apiClient.getApiService(requireContext()).getBeers().enqueue(object : Callback<BeersResponseWrapper> {
             override fun onFailure(call: Call<BeersResponseWrapper>?, t: Throwable?) {
                 Log.d(TAG, "Get beers call failed")
             }
