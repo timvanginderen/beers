@@ -18,5 +18,10 @@
         android:id="@+id/beersDetailFragment"
         android:name="be.tim.beers.BeersDetailFragment"
         android:label="beerdetail_frag"
-        tools:layout="@layout/beerdetail_frag" />
+        tools:layout="@layout/beerdetail_frag" >
+        <argument
+            android:name="beerId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>
