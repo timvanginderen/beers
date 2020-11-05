@@ -7,17 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
-import be.tim.beers.data.LoginData
-import be.tim.beers.data.LoginResponse
-import be.tim.beers.data.UserInfo
+import be.tim.beers.data.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 
 class BeersFragment : Fragment() {
@@ -65,6 +61,33 @@ class BeersFragment : Fragment() {
                 val response = response!!.body() as LoginResponse
                 val token = response.data.accessToken
                 Log.d(TAG, "Login success with token: $token")
+
+                getBeers(token)
+            }
+        })
+    }
+
+    private fun getBeers(token: String) {
+        // TODO: 05/11/2020 extract
+        val retrofit = Retrofit.Builder()
+            .baseUrl(" https://icapps-nodejs-beers-api.herokuapp.com/api/v1/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service: BeerService = retrofit.create(BeerService::class.java)
+
+        val repo: Call<BeersResponseWrapper> = service.getBeers("Bearer $token")
+
+        repo.enqueue(object : Callback<BeersResponseWrapper> {
+            override fun onFailure(call: Call<BeersResponseWrapper>?, t: Throwable?) {
+                Log.d(TAG, "Get beers call failed")
+            }
+
+            override fun onResponse(call: Call<BeersResponseWrapper>?, response: Response<BeersResponseWrapper>?) {
+                val response = response!!.body() as BeersResponseWrapper
+                val beers = response.data
+
+                Log.d(TAG, "Get beers success: loaded ${beers.size} beers")
             }
         })
     }
@@ -75,4 +98,8 @@ interface BeerService {
     @Headers("Content-Type: application/json")
     @POST("auth/login")
     fun login(@Body userInfo: UserInfo) : Call<LoginResponse>
+
+    @GET("beers")
+    fun getBeers(@Header("Authorization") token: String) : Call<BeersResponseWrapper>
+
 }
