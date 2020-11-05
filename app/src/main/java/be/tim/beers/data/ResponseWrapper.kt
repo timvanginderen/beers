@@ -2,6 +2,6 @@ package be.tim.beers.data
 
 import com.google.gson.annotations.SerializedName
 
-class LoginResponse (
-    @field:SerializedName("data") var data: LoginData,
+class ResponseWrapper<E> (
+    @field:SerializedName("data") var data: E,
 )

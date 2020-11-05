@@ -1,7 +1,8 @@
-package be.tim.beers
+package be.tim.beers.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import be.tim.beers.R
 
 class SessionManager (context: Context) {
     private var prefs: SharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)

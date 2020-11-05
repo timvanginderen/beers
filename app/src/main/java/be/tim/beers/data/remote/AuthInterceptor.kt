@@ -1,7 +1,7 @@
 package be.tim.beers.data.remote
 
 import android.content.Context
-import be.tim.beers.SessionManager
+import be.tim.beers.data.local.SessionManager
 import okhttp3.Interceptor
 import okhttp3.Response
 
