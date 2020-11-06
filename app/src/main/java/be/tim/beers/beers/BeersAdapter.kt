@@ -20,7 +20,7 @@ class BeersAdapter(private val beers: List<Beer>) : RecyclerView.Adapter<BeersAd
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val tvBeerName = itemView.findViewById<TextView>(R.id.tv_beer_name)
         val tvBreweryName = itemView.findViewById<TextView>(R.id.tv_brewery_name)
-        val rating = itemView.findViewById<RatingBar>(R.id.rating)
+        var rbBeer = itemView.findViewById<RatingBar>(R.id.rb_beer)
         val ivBeer = itemView.findViewById<ImageView>(R.id.iv_beer)
     }
 
@@ -38,10 +38,13 @@ class BeersAdapter(private val beers: List<Beer>) : RecyclerView.Adapter<BeersAd
         viewHolder.tvBeerName.text = beer.name
         viewHolder.tvBreweryName.text = beer.brewery.name
 
-        // TODO: 06/11/2020 make rating nullable
-        viewHolder.rating.visibility = if (beer.rating != null) View.VISIBLE else View.GONE
-        if (beer.rating != null) viewHolder.rating.rating = beer.rating.toFloat()
-
+        if (beer.rating != null) {
+            viewHolder.rbBeer.visibility = View.VISIBLE
+            viewHolder.rbBeer.rating = beer.rating!!.toFloat()
+        } else {
+            viewHolder.rbBeer.visibility = View.GONE
+        }
+        
         Picasso.get().load(beer.thumbImageUrl).into(viewHolder.ivBeer, object : Callback {
             override fun onSuccess() { }
 
