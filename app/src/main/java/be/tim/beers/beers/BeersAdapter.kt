@@ -44,7 +44,7 @@ class BeersAdapter(private val beers: List<Beer>) : RecyclerView.Adapter<BeersAd
         } else {
             viewHolder.rbBeer.visibility = View.GONE
         }
-        
+
         Picasso.get().load(beer.thumbImageUrl).into(viewHolder.ivBeer, object : Callback {
             override fun onSuccess() { }
 
