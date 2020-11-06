@@ -1,4 +1,4 @@
-package be.tim.beers
+package be.tim.beers.beerdetail
 
 import android.os.Bundle
 import android.util.Log
@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
+import be.tim.beers.BeersDetailFragmentArgs
+import be.tim.beers.R
 
-class BeersDetailFragment : Fragment() {
+class BeerDetailFragment : Fragment() {
 
-    private val TAG = BeersDetailFragment::class.qualifiedName
+    private val TAG = BeerDetailFragment::class.qualifiedName
 
     val args: BeersDetailFragmentArgs by navArgs()
 

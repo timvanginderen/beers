@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/beersDetailFragment"
-        android:name="be.tim.beers.BeersDetailFragment"
+        android:name="be.tim.beers.beerdetail.BeerDetailFragment"
         android:label="beerdetail_frag"
         tools:layout="@layout/beerdetail_frag" >
         <argument
