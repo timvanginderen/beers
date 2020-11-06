@@ -6,6 +6,7 @@ import android.view.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import be.tim.beers.R
@@ -89,6 +90,9 @@ class BeersFragment : Fragment() {
 
         rvBeers = view.findViewById<View>(R.id.rv_beers) as RecyclerView
         rvBeers.layoutManager = LinearLayoutManager(view.context)
+        rvBeers.addItemDecoration(
+            DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL)
+        )
     }
 
     override fun onResume() {
