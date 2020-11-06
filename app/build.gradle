@@ -66,5 +66,7 @@ dependencies {
     // UI dependencies
     implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
     implementation "com.squareup.picasso:picasso:$picasso_version"
+    implementation "androidx.cardview:cardview:$card_view_version"
+
 
 }
