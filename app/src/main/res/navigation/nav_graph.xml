@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/beersFragment"
         android:name="be.tim.beers.beers.BeersFragment"
-        android:label="beers_frag"
+        android:label="@string/app_name"
         tools:layout="@layout/beers_frag" >
         <action
             android:id="@+id/action_beersFragment_to_beersDetailFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/beersDetailFragment"
         android:name="be.tim.beers.beerdetail.BeerDetailFragment"
-        android:label="beerdetail_frag"
+        android:label="@string/app_name"
         tools:layout="@layout/beerdetail_frag" >
         <argument
             android:name="beerId"
