@@ -1,8 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BeersDetailFragment">
+    android:orientation="vertical">
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/iv_beer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/tv_beer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Beer Name"
+        style="@style/TextAppearance.AppCompat.Display1" />
+
+    <RatingBar
+        android:id="@+id/rb_beer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        style="@style/Widget.AppCompat.RatingBar.Small"/>
+
+    <TextView
+        android:id="@+id/tv_brewery_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Brewerey Name" />
+
+    <TextView
+        android:id="@+id/tv_brewery_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Brewery address" />
+
+    <Button
+        android:id="@+id/btn_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_rate" />
+
+</LinearLayout>

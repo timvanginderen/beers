@@ -15,23 +15,31 @@ class BeersAdapter(private val beers: List<Beer>) : RecyclerView.Adapter<BeersAd
 
     private val TAG = BeersAdapter::class.qualifiedName
 
+    var onItemClick: ((Beer) -> Unit)? = null
+
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val tvBeerName = itemView.findViewById<TextView>(R.id.tv_beer_name)
         val tvBreweryName = itemView.findViewById<TextView>(R.id.tv_brewery_name)
         var rbBeer = itemView.findViewById<RatingBar>(R.id.rb_beer)
         val ivBeer = itemView.findViewById<ImageView>(R.id.iv_beer)
+
+        init {
+            itemView.setOnClickListener {
+                onItemClick?.invoke(beers[adapterPosition])
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val contactView = inflater.inflate(R.layout.beer_item, parent, false)
+        val beerView = inflater.inflate(R.layout.beer_item, parent, false)
 
-        return ViewHolder(contactView)
+        return ViewHolder(beerView)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val beer: Beer = beers.get(position)
+        val beer: Beer = beers[position]
 
         viewHolder.tvBeerName.text = beer.name
         viewHolder.tvBreweryName.text = beer.brewery.name
