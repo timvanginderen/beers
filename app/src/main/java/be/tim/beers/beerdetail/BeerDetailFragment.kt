@@ -7,14 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
-import be.tim.beers.BeersDetailFragmentArgs
 import be.tim.beers.R
 
 class BeerDetailFragment : Fragment() {
 
     private val TAG = BeerDetailFragment::class.qualifiedName
 
-    val args: BeersDetailFragmentArgs by navArgs()
+    val args: BeerDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

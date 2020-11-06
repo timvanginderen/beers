@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import be.tim.beers.R
@@ -25,6 +26,8 @@ class BeersFragment : Fragment() {
 
     private lateinit var rvBeers : RecyclerView
     private lateinit var allBeers : List<Beer>
+    private lateinit var adapter: BeersAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -132,7 +135,14 @@ class BeersFragment : Fragment() {
 
                 Log.d(TAG, "Get beers success: loaded ${beers.size} beers")
 
-                rvBeers.adapter = BeersAdapter(beers)
+                adapter = BeersAdapter(beers)
+                adapter.onItemClick = { beer ->
+                    Log.d(TAG, "Clicked beer: ${beer.name}")
+
+                    val action = BeersFragmentDirections.actionBeersFragmentToBeersDetailFragment(beer.id)
+                    findNavController().navigate(action)
+                }
+                rvBeers.adapter = adapter
             }
         })
     }

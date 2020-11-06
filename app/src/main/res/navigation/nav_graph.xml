@@ -21,7 +21,6 @@
         tools:layout="@layout/beerdetail_frag" >
         <argument
             android:name="beerId"
-            app:argType="integer"
-            android:defaultValue="0" />
+            app:argType="string" />
     </fragment>
 </navigation>
