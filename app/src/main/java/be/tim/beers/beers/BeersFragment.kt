@@ -26,6 +26,7 @@ class BeersFragment : Fragment() {
 
     private lateinit var rvBeers : RecyclerView
     private lateinit var allBeers : List<Beer>
+    private lateinit var beers : List<Beer>
     private lateinit var adapter: BeersAdapter
 
 
@@ -58,14 +59,19 @@ class BeersFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.all -> {
-                        // TODO: 06/11/2020 modify adapter and notify 
-                        rvBeers.adapter = BeersAdapter(allBeers)
+                        (beers as ArrayList<Beer>).clear()
+                        (beers as ArrayList<Beer>).addAll(allBeers)
+                        adapter.notifyDataSetChanged()
                     }
                     R.id.rated -> {
-                        rvBeers.adapter = BeersAdapter(allBeers.filter { it.rating != null })
+                        (beers as ArrayList<Beer>).clear()
+                        (beers as ArrayList<Beer>).addAll(allBeers.filter { it.rating != null })
+                        adapter.notifyDataSetChanged()
                     }
                     R.id.best -> {
-                        rvBeers.adapter = BeersAdapter(allBeers.filter { it.rating?:0 > 4})
+                        (beers as ArrayList<Beer>).clear()
+                        (beers as ArrayList<Beer>).addAll(allBeers.filter { it.rating?:0 > 4})
+                        adapter.notifyDataSetChanged()
                     }
                 }
                 true
@@ -129,9 +135,10 @@ class BeersFragment : Fragment() {
 
             override fun onResponse(call: Call<ResponseWrapper<List<Beer>>>?, response: Response<ResponseWrapper<List<Beer>>>?) {
                 val response = response!!.body() as ResponseWrapper<List<Beer>>
-                val beers = response.data
+                val beerData = response.data
 
-                allBeers = beers
+                allBeers = beerData.toMutableList()
+                beers = beerData
 
                 Log.d(TAG, "Get beers success: loaded ${beers.size} beers")
 
