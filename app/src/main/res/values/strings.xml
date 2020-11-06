@@ -8,4 +8,5 @@
     <string name="refresh">Refresh</string>
     <string name="menu_filter">Filter</string>
     <string name="nav_best">Best</string>
+    <string name="btn_rate">Rate</string>
 </resources>
