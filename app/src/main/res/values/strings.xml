@@ -8,4 +8,8 @@
     <string name="refresh">Refresh</string>
     <string name="menu_filter">Filter</string>
     <string name="nav_best">Best</string>
+    <string name="btn_rate">Rate</string>
+    <string name="dialog_title">Rate beer</string>
+    <string name="dialog_message">Please tell us how much you like this beer by giving it a score from 1 to 5 stars.</string>
+    <string name="send">Send</string>
 </resources>
