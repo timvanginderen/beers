@@ -2,10 +2,9 @@ package be.tim.beers.beers
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import be.tim.beers.R
@@ -25,12 +24,55 @@ class BeersFragment : Fragment() {
     private lateinit var sessionManager: SessionManager
 
     private lateinit var rvBeers : RecyclerView
+    private lateinit var allBeers : List<Beer>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.beers_frag, container, false)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) =
+        when (item.itemId) {
+            R.id.menu_filter -> {
+                showFilterPopUpMenu()
+                true
+            }
+            R.id.menu_refresh -> {
+
+                true
+            }
+            else -> false
+        }
+
+    private fun showFilterPopUpMenu() {
+        val view = activity?.findViewById<View>(R.id.menu_filter) ?: return
+        PopupMenu(requireContext(), view).run {
+            menuInflater.inflate(R.menu.filter_beers, menu)
+
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.all -> {
+                        // TODO: 06/11/2020 modify adapter and notify 
+                        rvBeers.adapter = BeersAdapter(allBeers)
+                    }
+                    R.id.rated -> {
+                        rvBeers.adapter = BeersAdapter(allBeers.filter { it.rating != null })
+                    }
+                    R.id.best -> {
+                        rvBeers.adapter = BeersAdapter(allBeers.filter { it.rating?:0 > 4})
+                    }
+                }
+                true
+            }
+            show()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.beers_fragment_menu, menu)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,6 +127,8 @@ class BeersFragment : Fragment() {
             override fun onResponse(call: Call<ResponseWrapper<List<Beer>>>?, response: Response<ResponseWrapper<List<Beer>>>?) {
                 val response = response!!.body() as ResponseWrapper<List<Beer>>
                 val beers = response.data
+
+                allBeers = beers
 
                 Log.d(TAG, "Get beers success: loaded ${beers.size} beers")
 

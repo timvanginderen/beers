@@ -3,4 +3,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="navigation_view_header_title">Beers</string>
+    <string name="nav_all">All</string>
+    <string name="nav_rated">Rated</string>
+    <string name="refresh">Refresh</string>
+    <string name="menu_filter">Filter</string>
+    <string name="nav_best">Best</string>
 </resources>
