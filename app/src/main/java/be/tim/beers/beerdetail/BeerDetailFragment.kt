@@ -86,7 +86,8 @@ class BeerDetailFragment : Fragment() {
 
                     tvBeerName.text = beer.name
                     tvBreweryName.text =  beer.brewery.name
-                    tvBreweryAddress.text = beer.brewery.address
+                    tvBreweryAddress.text = "${beer.brewery.address}, ${beer.brewery.city}\n" +
+                            "${beer.brewery.country}"
 
                     if (beer.rating != null) {
                         rbBeer.visibility = View.VISIBLE

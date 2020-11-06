@@ -36,12 +36,6 @@
         android:layout_height="wrap_content"
         android:text="Brewery address" />
 
-    <TextView
-        android:id="@+id/tv_brewery_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Short info, Bonne biere, touche caramel \n Manque un peu de caractere a mon gout pour une brune mais sympa a boire" />
-
     <Button
         android:id="@+id/btn_rate"
         android:layout_width="wrap_content"
