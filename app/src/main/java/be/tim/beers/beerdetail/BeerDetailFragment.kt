@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.navArgs
 import be.tim.beers.R
 import be.tim.beers.data.Beer
+import be.tim.beers.data.RatingInfo
 import be.tim.beers.data.ResponseWrapper
 import be.tim.beers.data.local.SessionManager
 import be.tim.beers.data.remote.ApiClient
@@ -35,6 +36,7 @@ class BeerDetailFragment : Fragment() {
     private lateinit var tvBeerName: TextView
     private lateinit var tvBreweryName: TextView
     private lateinit var tvBreweryAddress: TextView
+    private lateinit var rbBeer: RatingBar
     private lateinit var btnRate: Button
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -59,6 +61,7 @@ class BeerDetailFragment : Fragment() {
         tvBeerName = view.findViewById<View>(R.id.tv_beer_name) as TextView
         tvBreweryName = view.findViewById<View>(R.id.tv_brewery_name) as TextView
         tvBreweryAddress = view.findViewById<View>(R.id.tv_brewery_address) as TextView
+        rbBeer = view.findViewById<View>(R.id.rb_beer) as RatingBar
         btnRate = view.findViewById<View>(R.id.btn_rate) as Button
 
         return view
@@ -85,6 +88,13 @@ class BeerDetailFragment : Fragment() {
                     tvBreweryName.text =  beer.brewery.name
                     tvBreweryAddress.text = beer.brewery.address
 
+                    if (beer.rating != null) {
+                        rbBeer.visibility = View.VISIBLE
+                        rbBeer.rating = beer.rating!!.toFloat()
+                    } else {
+                        rbBeer.visibility = View.GONE
+                    }
+
                     Picasso.get().load(beer.imageUrl).into(ivBeer)
 
                     btnRate.setOnClickListener {
@@ -98,7 +108,8 @@ class BeerDetailFragment : Fragment() {
     private fun showRatingDialog() {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.rating_dialog, null)
         val ratingBar = dialogView.findViewById<View>(R.id.rating) as RatingBar
-        var rating : Float = 0.0F
+        var rating = 0.0F
+
         ratingBar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener {
             p0: RatingBar?, p1: Float, p2: Boolean -> rating = p1
         }
@@ -110,13 +121,33 @@ class BeerDetailFragment : Fragment() {
         builder?.setMessage(R.string.dialog_message)
                 ?.setTitle(R.string.dialog_title)
                 ?.setPositiveButton(R.string.send) { dialog, id ->
-                    // TODO: 06/11/2020 send rating
-                    Toast.makeText(context, "$rating stars selected", Toast.LENGTH_LONG).show()
+                    updateRating(args.beerId, rating.toInt())
                 }
                 ?.setView(dialogView)
 
         val dialog: AlertDialog? = builder?.create()
         dialog?.show()
+    }
+
+    private fun updateRating(beerId: String, rating: Int) {
+        apiClient.getApiService(requireContext()).updateRating(beerId, RatingInfo(rating = rating))
+                .enqueue(object : Callback<ResponseWrapper<Beer>> {
+            override fun onFailure(call: Call<ResponseWrapper<Beer>>?, t: Throwable?) {
+                Log.d(TAG, "Update rating ($beerId) call failed")
+            }
+
+            override fun onResponse(call: Call<ResponseWrapper<Beer>>?,
+                                    response: Response<ResponseWrapper<Beer>>?) {
+                Log.d(TAG, "Update rating call success")
+
+                if (response?.code() == 200) {
+                    val response = response.body() as ResponseWrapper<Beer>
+                    val beer = response.data
+                    rbBeer.rating = if (beer.rating == null) 0.0F else beer.rating!!.toFloat()
+                    Toast.makeText(context, "Thank you for rating ${beer.name}!", Toast.LENGTH_LONG).show()
+                }
+            }
+        })
     }
 
 }

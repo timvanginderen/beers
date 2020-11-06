@@ -17,6 +17,13 @@
         android:text="Beer Name"
         style="@style/TextAppearance.AppCompat.Display1" />
 
+    <RatingBar
+        android:id="@+id/rb_beer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        style="@style/Widget.AppCompat.RatingBar.Small"/>
+
     <TextView
         android:id="@+id/tv_brewery_name"
         android:layout_width="wrap_content"
