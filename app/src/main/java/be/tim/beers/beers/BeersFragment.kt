@@ -41,7 +41,7 @@ class BeersFragment : Fragment() {
                 true
             }
             R.id.menu_refresh -> {
-
+                // TODO: 06/11/2020 implement!
                 true
             }
             else -> false
