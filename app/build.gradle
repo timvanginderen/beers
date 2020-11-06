@@ -62,4 +62,9 @@ dependencies {
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    // UI dependencies
+    implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
+    implementation "com.squareup.picasso:picasso:$picasso_version"
+
 }

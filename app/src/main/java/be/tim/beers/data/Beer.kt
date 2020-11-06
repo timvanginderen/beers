@@ -8,5 +8,5 @@ class Beer (
     @field:SerializedName("thumbImageUrl") var thumbImageUrl: String,
     @field:SerializedName("imageUrl") var imageUrl: String,
     @field:SerializedName("brewery") var brewery: Brewery,
-    @field:SerializedName("rating") var rating: Int,
+    @field:SerializedName("rating") var rating: Int?,
 )
