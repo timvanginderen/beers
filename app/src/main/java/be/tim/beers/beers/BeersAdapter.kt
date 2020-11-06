@@ -1,5 +1,6 @@
 package be.tim.beers.beers
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import be.tim.beers.R
 import be.tim.beers.data.Beer
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 
 class BeersAdapter(private val beers: List<Beer>) : RecyclerView.Adapter<BeersAdapter.ViewHolder>() {
+
+    private val TAG = BeersAdapter::class.qualifiedName
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val tvBeerName = itemView.findViewById<TextView>(R.id.tv_beer_name)
@@ -30,11 +35,21 @@ class BeersAdapter(private val beers: List<Beer>) : RecyclerView.Adapter<BeersAd
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val beer: Beer = beers.get(position)
 
-        viewHolder.tvBeerName.setText(beer.name)
-        viewHolder.tvBreweryName.setText(beer.brewery.name)
+        viewHolder.tvBeerName.text = beer.name
+        viewHolder.tvBreweryName.text = beer.brewery.name
 
-        viewHolder.rating.visibility = if (beer.rating == null) View.VISIBLE else View.GONE
+        // TODO: 06/11/2020 make rating nullable
+        viewHolder.rating.visibility = if (beer.rating != null) View.VISIBLE else View.GONE
         if (beer.rating != null) viewHolder.rating.rating = beer.rating.toFloat()
+
+        Picasso.get().load(beer.thumbImageUrl).into(viewHolder.ivBeer, object : Callback {
+            override fun onSuccess() { }
+
+            override fun onError(e: Exception?) {
+                Log.d(TAG, "Picasso load error for ${beer.thumbImageUrl}")
+                // TODO: 06/11/2020 load placeholder
+            }
+        })
     }
 
     override fun getItemCount(): Int {
