@@ -7,26 +7,28 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-    private lateinit var apiService: ApiService
+    private var servicesApiInterface: ApiService? = null
 
-    fun getApiService(context: Context?): ApiService {
+    fun build(): ApiService? {
+        var builder: Retrofit.Builder = Retrofit.Builder()
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
 
-        if (!::apiService.isInitialized) {
-            val retrofit = Retrofit.Builder()
-                    .baseUrl(Constants.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-//                    .client(okHttpClient(context))
-                    .build()
+        var httpClient: OkHttpClient.Builder = OkHttpClient.Builder()
+        httpClient.addInterceptor(AuthInterceptor(null))
+//        httpClient.addInterceptor(interceptor())
 
-            apiService = retrofit.create(ApiService::class.java)
-        }
+        var retrofit: Retrofit = builder.client(httpClient.build()).build()
+        servicesApiInterface = retrofit.create(
+            ApiService::class.java
+        )
 
-        return apiService
+        return servicesApiInterface as ApiService
     }
 
-    private fun okHttpClient(context: Context): OkHttpClient {
-        return OkHttpClient.Builder()
-                .addInterceptor(AuthInterceptor(context))
-                .build()
-    }
+//    private fun interceptor(): HttpLoggingInterceptor {
+//        val httpLoggingInterceptor = HttpLoggingInterceptor()
+//        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+//        return httpLoggingInterceptor
+//    }
 }

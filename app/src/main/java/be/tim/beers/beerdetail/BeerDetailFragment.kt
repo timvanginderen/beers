@@ -72,38 +72,38 @@ class BeerDetailFragment : Fragment() {
     }
 
     private fun getBeer(beerId: String) {
-        apiClient.getApiService(requireContext()).getBeer(beerId).enqueue(object : Callback<ResponseWrapper<Beer>> {
-            override fun onFailure(call: Call<ResponseWrapper<Beer>>?, t: Throwable?) {
-                Log.d(TAG, "Get beer ($beerId) call failed")
-            }
-
-            override fun onResponse(call: Call<ResponseWrapper<Beer>>?, response: Response<ResponseWrapper<Beer>>?) {
-                if (response?.code() == 200) {
-                    val response = response.body() as ResponseWrapper<Beer>
-                    val beer = response.data
-
-                    Log.d(TAG, "Get beer ${beer.name} success")
-
-                    tvBeerName.text = beer.name
-                    tvBreweryName.text =  beer.brewery.name
-                    tvBreweryAddress.text = "${beer.brewery.address}, ${beer.brewery.city}\n" +
-                            "${beer.brewery.country}"
-
-                    if (beer.rating != null) {
-                        rbBeer.visibility = View.VISIBLE
-                        rbBeer.rating = beer.rating!!.toFloat()
-                    } else {
-                        rbBeer.visibility = View.GONE
-                    }
-
-                    Picasso.get().load(beer.imageUrl).into(ivBeer)
-
-                    btnRate.setOnClickListener {
-                        showRatingDialog()
-                    }
-                }
-            }
-        })
+//        apiClient.getApiService(requireContext()).getBeer(beerId).enqueue(object : Callback<ResponseWrapper<Beer>> {
+//            override fun onFailure(call: Call<ResponseWrapper<Beer>>?, t: Throwable?) {
+//                Log.d(TAG, "Get beer ($beerId) call failed")
+//            }
+//
+//            override fun onResponse(call: Call<ResponseWrapper<Beer>>?, response: Response<ResponseWrapper<Beer>>?) {
+//                if (response?.code() == 200) {
+//                    val response = response.body() as ResponseWrapper<Beer>
+//                    val beer = response.data
+//
+//                    Log.d(TAG, "Get beer ${beer.name} success")
+//
+//                    tvBeerName.text = beer.name
+//                    tvBreweryName.text =  beer.brewery.name
+//                    tvBreweryAddress.text = "${beer.brewery.address}, ${beer.brewery.city}\n" +
+//                            "${beer.brewery.country}"
+//
+//                    if (beer.rating != null) {
+//                        rbBeer.visibility = View.VISIBLE
+//                        rbBeer.rating = beer.rating!!.toFloat()
+//                    } else {
+//                        rbBeer.visibility = View.GONE
+//                    }
+//
+//                    Picasso.get().load(beer.imageUrl).into(ivBeer)
+//
+//                    btnRate.setOnClickListener {
+//                        showRatingDialog()
+//                    }
+//                }
+//            }
+//        })
     }
 
     private fun showRatingDialog() {
@@ -131,24 +131,24 @@ class BeerDetailFragment : Fragment() {
     }
 
     private fun updateRating(beerId: String, rating: Int) {
-        apiClient.getApiService(requireContext()).updateRating(beerId, RatingInfo(rating = rating))
-                .enqueue(object : Callback<ResponseWrapper<Beer>> {
-            override fun onFailure(call: Call<ResponseWrapper<Beer>>?, t: Throwable?) {
-                Log.d(TAG, "Update rating ($beerId) call failed")
-            }
-
-            override fun onResponse(call: Call<ResponseWrapper<Beer>>?,
-                                    response: Response<ResponseWrapper<Beer>>?) {
-                Log.d(TAG, "Update rating call success")
-
-                if (response?.code() == 200) {
-                    val response = response.body() as ResponseWrapper<Beer>
-                    val beer = response.data
-                    rbBeer.rating = if (beer.rating == null) 0.0F else beer.rating!!.toFloat()
-                    Toast.makeText(context, "Thank you for rating ${beer.name}!", Toast.LENGTH_LONG).show()
-                }
-            }
-        })
+//        apiClient.getApiService(requireContext()).updateRating(beerId, RatingInfo(rating = rating))
+//                .enqueue(object : Callback<ResponseWrapper<Beer>> {
+//            override fun onFailure(call: Call<ResponseWrapper<Beer>>?, t: Throwable?) {
+//                Log.d(TAG, "Update rating ($beerId) call failed")
+//            }
+//
+//            override fun onResponse(call: Call<ResponseWrapper<Beer>>?,
+//                                    response: Response<ResponseWrapper<Beer>>?) {
+//                Log.d(TAG, "Update rating call success")
+//
+//                if (response?.code() == 200) {
+//                    val response = response.body() as ResponseWrapper<Beer>
+//                    val beer = response.data
+//                    rbBeer.rating = if (beer.rating == null) 0.0F else beer.rating!!.toFloat()
+//                    Toast.makeText(context, "Thank you for rating ${beer.name}!", Toast.LENGTH_LONG).show()
+//                }
+//            }
+//        })
     }
 
 }

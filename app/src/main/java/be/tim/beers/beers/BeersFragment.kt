@@ -144,50 +144,50 @@ class BeersFragment : Fragment() {
     private fun login() {
         val userInfo = UserInfo( userName = "star_developer@icapps.com", password = "developer")
 
-        apiClient.getApiService(requireContext()).login(userInfo).enqueue(object : Callback<ResponseWrapper<LoginData>> {
-            override fun onFailure(call: Call<ResponseWrapper<LoginData>>?, t: Throwable?) {
-                Log.d(TAG, "Login call failed")
-            }
-
-            override fun onResponse(call: Call<ResponseWrapper<LoginData>>?, response: Response<ResponseWrapper<LoginData>>?) {
-                if (response?.code() == 200) {
-                    val response = response.body() as ResponseWrapper<LoginData>
-                    val token = response.data.accessToken
-                    sessionManager.saveAuthToken(token)
-                    Log.d(TAG, "Login success with token: $token")
-
-                    getBeers()
-                } else {
-                    // TODO: 05/11/2020 handle error
-                }
-            }
-        })
+//        apiClient.getApiService(requireContext()).login(userInfo).enqueue(object : Callback<ResponseWrapper<LoginData>> {
+//            override fun onFailure(call: Call<ResponseWrapper<LoginData>>?, t: Throwable?) {
+//                Log.d(TAG, "Login call failed")
+//            }
+//
+//            override fun onResponse(call: Call<ResponseWrapper<LoginData>>?, response: Response<ResponseWrapper<LoginData>>?) {
+//                if (response?.code() == 200) {
+//                    val response = response.body() as ResponseWrapper<LoginData>
+//                    val token = response.data.accessToken
+//                    sessionManager.saveAuthToken(token)
+//                    Log.d(TAG, "Login success with token: $token")
+//
+//                    getBeers()
+//                } else {
+//                    // TODO: 05/11/2020 handle error
+//                }
+//            }
+//        })
     }
 
     private fun getBeers() {
-        apiClient.getApiService(requireContext()).getBeers().enqueue(object : Callback<ResponseWrapper<List<Beer>>> {
-            override fun onFailure(call: Call<ResponseWrapper<List<Beer>>>?, t: Throwable?) {
-                Log.d(TAG, "Get beers call failed")
-            }
-
-            override fun onResponse(call: Call<ResponseWrapper<List<Beer>>>?, response: Response<ResponseWrapper<List<Beer>>>?) {
-                val response = response!!.body() as ResponseWrapper<List<Beer>>
-                val beerData = response.data
-
-                allBeers = beerData.toMutableList()
-                beers = beerData
-
-                Log.d(TAG, "Get beers success: loaded ${beers.size} beers")
-
-                adapter = BeersAdapter(beers)
-                adapter.onItemClick = { beer ->
-                    Log.d(TAG, "Clicked beer: ${beer.name}")
-
-                    val action = BeersFragmentDirections.actionBeersFragmentToBeersDetailFragment(beer.id)
-                    findNavController().navigate(action)
-                }
-                rvBeers.adapter = adapter
-            }
-        })
+//        apiClient.getApiService(requireContext()).getBeers().enqueue(object : Callback<ResponseWrapper<List<Beer>>> {
+//            override fun onFailure(call: Call<ResponseWrapper<List<Beer>>>?, t: Throwable?) {
+//                Log.d(TAG, "Get beers call failed")
+//            }
+//
+//            override fun onResponse(call: Call<ResponseWrapper<List<Beer>>>?, response: Response<ResponseWrapper<List<Beer>>>?) {
+//                val response = response!!.body() as ResponseWrapper<List<Beer>>
+//                val beerData = response.data
+//
+//                allBeers = beerData.toMutableList()
+//                beers = beerData
+//
+//                Log.d(TAG, "Get beers success: loaded ${beers.size} beers")
+//
+//                adapter = BeersAdapter(beers)
+//                adapter.onItemClick = { beer ->
+//                    Log.d(TAG, "Clicked beer: ${beer.name}")
+//
+//                    val action = BeersFragmentDirections.actionBeersFragmentToBeersDetailFragment(beer.id)
+//                    findNavController().navigate(action)
+//                }
+//                rvBeers.adapter = adapter
+//            }
+//        })
     }
 }
