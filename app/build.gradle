@@ -51,7 +51,8 @@ dependencies {
 
     // AndroidX Test - JVM testing
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
 
     // Navigation dependencies
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -68,6 +69,4 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
     implementation "com.squareup.picasso:picasso:$picasso_version"
     implementation "androidx.cardview:cardview:$card_view_version"
-
-
 }
