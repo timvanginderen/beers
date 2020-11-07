@@ -1,8 +1,5 @@
 package be.tim.beers.beerdetail
 
-import android.app.Dialog
-import android.content.DialogInterface
-import android.media.Rating
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,6 +15,8 @@ import be.tim.beers.data.RatingInfo
 import be.tim.beers.data.ResponseWrapper
 import be.tim.beers.data.local.SessionManager
 import be.tim.beers.data.remote.ApiClient
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,6 +28,7 @@ class BeerDetailFragment : Fragment() {
 
     private val args: BeerDetailFragmentArgs by navArgs()
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var apiClient: ApiClient
     private lateinit var sessionManager: SessionManager
 
@@ -46,6 +46,10 @@ class BeerDetailFragment : Fragment() {
 
         apiClient = ApiClient()
         sessionManager = SessionManager(requireContext())
+
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+            param(FirebaseAnalytics.Param.SCREEN_CLASS, BeerDetailFragment::class.qualifiedName.toString())
+        }
 
         getBeer(args.beerId)
     }
@@ -65,10 +69,6 @@ class BeerDetailFragment : Fragment() {
         btnRate = view.findViewById<View>(R.id.btn_rate) as Button
 
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun getBeer(beerId: String) {

@@ -13,6 +13,10 @@ import be.tim.beers.R
 import be.tim.beers.data.*
 import be.tim.beers.data.local.SessionManager
 import be.tim.beers.data.remote.ApiClient
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,6 +26,8 @@ class BeersFragment : Fragment() {
 
     private val TAG = BeersFragment::class.qualifiedName
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     private lateinit var apiClient: ApiClient
     private lateinit var sessionManager: SessionManager
 
@@ -30,6 +36,10 @@ class BeersFragment : Fragment() {
     private lateinit var beers : List<Beer>
     private lateinit var adapter: BeersAdapter
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -120,8 +130,13 @@ class BeersFragment : Fragment() {
                 if (response?.code() == 200) {
                     val response = response.body() as ResponseWrapper<LoginData>
                     val token = response.data.accessToken
-                    sessionManager.saveAuthToken(token)
                     Log.d(TAG, "Login success with token: $token")
+
+                    sessionManager.saveAuthToken(token)
+
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN) {
+                        param(FirebaseAnalytics.Param.ITEM_ID, userInfo.userName!!)
+                    }
 
                     getBeers()
                 } else {
