@@ -13,6 +13,8 @@
         android:numStars="5"
         android:layout_gravity="center"
         android:isIndicator="false"
-        android:stepSize="1.0" />
+        android:stepSize="1.0"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"/>
 
 </LinearLayout>
