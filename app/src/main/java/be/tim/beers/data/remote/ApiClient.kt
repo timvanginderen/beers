@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiClient {
     private var servicesApiInterface: ApiService? = null
 
-    fun build(): ApiService? {
+    fun build(token:String): ApiService? {
         var builder: Retrofit.Builder = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

@@ -8,10 +8,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class BeerRemoteDataSource(apiClient: ApiClient) : BeerDataSource {
+class BeerRemoteDataSource(apiClient: ApiClient, token:String) : BeerDataSource {
 
     private var call: Call<ResponseWrapper<List<Beer>>>? = null
-    private val service = apiClient.build()
+    private val service = apiClient.build(token)
 
     override fun retrieveBeers(callback: OperationCallback<Beer>) {
         call = service?.getBeers()
