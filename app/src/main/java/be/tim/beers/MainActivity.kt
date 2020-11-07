@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.qualifiedName
 
 
-    private lateinit var viewModel: BeersViewModel
+//    private lateinit var viewModel: BeersViewModel
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupViewModel()
+//        setupViewModel()
 
         setSupportActionBar(findViewById(R.id.toolbar))
         setupNavigationDrawer()
@@ -50,25 +50,25 @@ class MainActivity : AppCompatActivity() {
                 .setupWithNavController(navController)
     }
 
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(
-            this,
-            Injection.provideViewModelFactory()
-        ).get(BeersViewModel::class.java)
-
-        viewModel.museums.observe(this, renderBeers)
-//        viewModel.isViewLoading.observe(this, isViewLoadingObserver)
-//        viewModel.onMessageError.observe(this, onMessageErrorObserver)
-//        viewModel.isEmptyList.observe(this, emptyListObserver)
-    }
-
-    //observers
-    private val renderBeers = Observer<List<Beer>> {
-        Log.v(TAG, "data updated $it")
-//        layoutError.visibility = View.GONE
-//        layoutEmpty.visibility = View.GONE
-//        adapter.update(it)
-    }
+//    private fun setupViewModel() {
+//        viewModel = ViewModelProvider(
+//            this,
+//            Injection.provideViewModelFactory()
+//        ).get(BeersViewModel::class.java)
+//
+//        viewModel.beers.observe(this, renderBeers)
+////        viewModel.isViewLoading.observe(this, isViewLoadingObserver)
+////        viewModel.onMessageError.observe(this, onMessageErrorObserver)
+////        viewModel.isEmptyList.observe(this, emptyListObserver)
+//    }
+//
+//    //observers
+//    private val renderBeers = Observer<List<Beer>> {
+//        Log.v(TAG, "data updated $it")
+////        layoutError.visibility = View.GONE
+////        layoutEmpty.visibility = View.GONE
+////        adapter.update(it)
+//    }
 
 
     override fun onSupportNavigateUp(): Boolean {

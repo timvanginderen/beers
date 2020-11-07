@@ -44,7 +44,7 @@ class BeerDetailFragment : Fragment() {
 
         Log.d(TAG, "onActivityCreated with beerId: ${args.beerId}")
 
-        apiClient = ApiClient()
+        apiClient = ApiClient
         sessionManager = SessionManager(requireContext())
 
         getBeer(args.beerId)

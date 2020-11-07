@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +15,7 @@ import be.tim.beers.R
 import be.tim.beers.data.*
 import be.tim.beers.data.local.SessionManager
 import be.tim.beers.data.remote.ApiClient
+import be.tim.beers.di.Injection
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,6 +25,8 @@ class BeersFragment : Fragment() {
 
     private val TAG = BeersFragment::class.qualifiedName
 
+    private lateinit var viewModel: BeersViewModel
+
     private lateinit var apiClient: ApiClient
     private lateinit var sessionManager: SessionManager
 
@@ -29,6 +34,32 @@ class BeersFragment : Fragment() {
     private lateinit var allBeers : List<Beer>
     private lateinit var beers : List<Beer>
     private lateinit var adapter: BeersAdapter
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        setupViewModel()
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            Injection.provideViewModelFactory()
+        ).get(BeersViewModel::class.java)
+
+        viewModel.beers.observe(viewLifecycleOwner, renderBeers)
+//        viewModel.isViewLoading.observe(this, isViewLoadingObserver)
+//        viewModel.onMessageError.observe(this, onMessageErrorObserver)
+//        viewModel.isEmptyList.observe(this, emptyListObserver)
+    }
+
+    //observers
+    private val renderBeers = Observer<List<Beer>> {
+        Log.v(TAG, "data updated $it")
+//        layoutError.visibility = View.GONE
+//        layoutEmpty.visibility = View.GONE
+//        adapter.update(it)
+    }
 
 
     override fun onCreateView(
@@ -98,14 +129,16 @@ class BeersFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        apiClient = ApiClient()
-        sessionManager = SessionManager(requireContext())
+//        apiClient = ApiClient
+//        sessionManager = SessionManager(requireContext())
+//
+//        if (sessionManager.fetchAuthToken() == null) {
+//            login()
+//        } else {
+//            getBeers()
+//        }
 
-        if (sessionManager.fetchAuthToken() == null) {
-            login()
-        } else {
-            getBeers()
-        }
+        viewModel.loadBeers()
     }
 
     private fun login() {
