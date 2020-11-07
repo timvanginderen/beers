@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import be.tim.beers.R
 import be.tim.beers.data.Beer
@@ -16,7 +17,9 @@ import be.tim.beers.data.ResponseWrapper
 import be.tim.beers.data.local.SessionManager
 import be.tim.beers.data.remote.ApiClient
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,6 +50,7 @@ class BeerDetailFragment : Fragment() {
         apiClient = ApiClient()
         sessionManager = SessionManager(requireContext())
 
+        firebaseAnalytics = Firebase.analytics
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
             param(FirebaseAnalytics.Param.SCREEN_CLASS, BeerDetailFragment::class.qualifiedName.toString())
         }
@@ -99,7 +103,8 @@ class BeerDetailFragment : Fragment() {
                     Picasso.get().load(beer.imageUrl).into(ivBeer)
 
                     btnRate.setOnClickListener {
-                        showRatingDialog()
+//                        showRatingDialog()
+                        findNavController().navigate(BeerDetailFragmentDirections.actionBeersDetailFragmentToBreweryMapFragment())
                     }
                 }
             }

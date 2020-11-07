@@ -9,13 +9,18 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -30,7 +35,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
         setupNavigationDrawer()
-        setSupportActionBar(findViewById(R.id.toolbar))
 
         val navController: NavController = findNavController(R.id.fragment)
         appBarConfiguration =
@@ -41,6 +45,11 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         findViewById<NavigationView>(R.id.nav_view)
                 .setupWithNavController(navController)
+
+        // Get the SupportMapFragment and request notification when the map is ready to be used.
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
+        mapFragment?.getMapAsync(this)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -53,5 +62,16 @@ class MainActivity : AppCompatActivity() {
                 .apply {
                     setStatusBarBackground(R.color.brown_600)
                 }
+    }
+
+    override fun onMapReady(googleMap: GoogleMap?) {
+        googleMap?.apply {
+            val sydney = LatLng(-33.852, 151.211)
+            addMarker(
+                MarkerOptions()
+                    .position(sydney)
+                    .title("Marker in Sydney")
+            )
+        }
     }
 }
