@@ -104,7 +104,6 @@ class BeerDetailFragment : Fragment() {
                             beer.brewery.country
                     tvBreweryAddress.text = addressLine
 
-
                     if (beer.rating != null) {
                         rbBeer.visibility = View.VISIBLE
                         rbBeer.rating = beer.rating!!.toFloat()
@@ -156,7 +155,6 @@ class BeerDetailFragment : Fragment() {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.rating_dialog, null)
         val ratingBar = dialogView.findViewById<View>(R.id.rating) as RatingBar
         var rating = 0.0F
-
 
         ratingBar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener {
             p0: RatingBar?, p1: Float, p2: Boolean -> rating = p1
