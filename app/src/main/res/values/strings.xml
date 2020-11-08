@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Beers</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="navigation_view_header_title">Beers</string>
     <string name="nav_all">All</string>
     <string name="nav_rated">Rated</string>
@@ -12,4 +10,5 @@
     <string name="dialog_title">Rate beer</string>
     <string name="dialog_message">Please tell us how much you like this beer by giving it a score from 1 to 5 stars.</string>
     <string name="send">Send</string>
+    <string name="btn_show_map">Show brewery</string>
 </resources>

@@ -22,5 +22,22 @@
         <argument
             android:name="beerId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_beersDetailFragment_to_breweryMapFragment"
+            app:destination="@id/breweryMapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/breweryMapFragment"
+        android:name="be.tim.beers.brewery.BreweryMapFragment"
+        android:label="BreweryMapFragment" >
+        <argument
+            android:name="lat"
+            app:argType="long" />
+        <argument
+            android:name="long"
+            app:argType="long" />
+        <argument
+            android:name="name"
+            app:argType="string" />
     </fragment>
 </navigation>

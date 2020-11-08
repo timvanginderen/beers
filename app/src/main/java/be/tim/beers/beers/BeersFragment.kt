@@ -13,6 +13,11 @@ import be.tim.beers.R
 import be.tim.beers.data.*
 import be.tim.beers.data.local.SessionManager
 import be.tim.beers.data.remote.ApiClient
+import be.tim.beers.data.remote.ResponseWrapper
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,6 +27,8 @@ class BeersFragment : Fragment() {
 
     private val TAG = BeersFragment::class.qualifiedName
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     private lateinit var apiClient: ApiClient
     private lateinit var sessionManager: SessionManager
 
@@ -30,6 +37,10 @@ class BeersFragment : Fragment() {
     private lateinit var beers : List<Beer>
     private lateinit var adapter: BeersAdapter
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -118,10 +129,15 @@ class BeersFragment : Fragment() {
 
             override fun onResponse(call: Call<ResponseWrapper<LoginData>>?, response: Response<ResponseWrapper<LoginData>>?) {
                 if (response?.code() == 200) {
-                    val response = response.body() as ResponseWrapper<LoginData>
-                    val token = response.data.accessToken
-                    sessionManager.saveAuthToken(token)
+                    val res = response.body() as ResponseWrapper<LoginData>
+                    val token = res.data.accessToken
                     Log.d(TAG, "Login success with token: $token")
+
+                    sessionManager.saveAuthToken(token)
+
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN) {
+                        param(FirebaseAnalytics.Param.ITEM_ID, userInfo.userName!!)
+                    }
 
                     getBeers()
                 } else {
@@ -138,8 +154,8 @@ class BeersFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<ResponseWrapper<List<Beer>>>?, response: Response<ResponseWrapper<List<Beer>>>?) {
-                val response = response!!.body() as ResponseWrapper<List<Beer>>
-                val beerData = response.data
+                val res = response!!.body() as ResponseWrapper<List<Beer>>
+                val beerData = res.data
 
                 allBeers = beerData.toMutableList()
                 beers = beerData
