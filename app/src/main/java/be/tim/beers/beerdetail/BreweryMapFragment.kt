@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import be.tim.beers.R
@@ -31,6 +32,8 @@ class BreweryMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.title = args.name
+
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
@@ -44,7 +47,7 @@ class BreweryMapFragment : Fragment(), OnMapReadyCallback {
             addMarker(
                 MarkerOptions()
                     .position(brewery)
-                    .title("Brewery")
+                    .title(args.name)
             )
             val cameraPosition = CameraPosition.builder().target(brewery).zoom(15F).build()
             animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))

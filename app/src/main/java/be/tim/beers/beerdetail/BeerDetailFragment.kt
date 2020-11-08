@@ -120,7 +120,8 @@ class BeerDetailFragment : Fragment() {
                         btnShowMap.setOnClickListener {
                             val action = BeerDetailFragmentDirections.actionBeersDetailFragmentToBreweryMapFragment(
                                     Util.convertLocationToLong(location!!.latitude),
-                                    Util.convertLocationToLong(location!!.longitude))
+                                    Util.convertLocationToLong(location!!.longitude),
+                                    beer.brewery.name)
                             findNavController().navigate(action)
                         }
                     }
