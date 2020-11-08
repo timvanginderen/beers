@@ -12,4 +12,5 @@
     <string name="dialog_title">Rate beer</string>
     <string name="dialog_message">Please tell us how much you like this beer by giving it a score from 1 to 5 stars.</string>
     <string name="send">Send</string>
+    <string name="btn_show_map">Show brewery</string>
 </resources>

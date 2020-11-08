@@ -29,5 +29,12 @@
     <fragment
         android:id="@+id/breweryMapFragment"
         android:name="be.tim.beers.beerdetail.BreweryMapFragment"
-        android:label="BreweryMapFragment" />
+        android:label="BreweryMapFragment" >
+        <argument
+            android:name="lat"
+            app:argType="long" />
+        <argument
+            android:name="long"
+            app:argType="long" />
+    </fragment>
 </navigation>
