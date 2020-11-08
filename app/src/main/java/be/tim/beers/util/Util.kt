@@ -1,12 +1,14 @@
 package be.tim.beers.util
 
+import be.tim.beers.Constants.COORDINATE_BASE_MULTIPLIER
+
 object Util {
 
     fun convertLocationToLong(coordinate: Double) : Long {
-        return (coordinate * 1000000000).toLong()
+        return (coordinate * COORDINATE_BASE_MULTIPLIER).toLong()
     }
 
     fun convertLocationToDouble(coordinate: Long) : Double {
-        return coordinate.toDouble()/1000000000
+        return coordinate.toDouble()/COORDINATE_BASE_MULTIPLIER
     }
 }

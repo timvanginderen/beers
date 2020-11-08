@@ -5,4 +5,5 @@ object Constants {
     const val LOGIN_ENDPOINT = "auth/login"
     const val BEERS_ENDPOINT = "beers"
     const val BREWERIES_ENDPOINT = "breweries"
+    const val COORDINATE_BASE_MULTIPLIER = 1000000000
 }
