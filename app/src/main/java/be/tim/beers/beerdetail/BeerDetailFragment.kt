@@ -15,7 +15,7 @@ import androidx.navigation.fragment.navArgs
 import be.tim.beers.R
 import be.tim.beers.data.Beer
 import be.tim.beers.data.RatingInfo
-import be.tim.beers.data.ResponseWrapper
+import be.tim.beers.data.remote.ResponseWrapper
 import be.tim.beers.data.local.SessionManager
 import be.tim.beers.data.remote.ApiClient
 import be.tim.beers.util.Util
@@ -89,19 +89,19 @@ class BeerDetailFragment : Fragment() {
             }
 
             override fun onResponse(
-                call: Call<ResponseWrapper<Beer>>?,
-                response: Response<ResponseWrapper<Beer>>?
+                    call: Call<ResponseWrapper<Beer>>?,
+                    response: Response<ResponseWrapper<Beer>>?
             ) {
                 if (response?.code() == 200) {
-                    val response = response.body() as ResponseWrapper<Beer>
-                    val beer = response.data
+                    val res = response.body() as ResponseWrapper<Beer>
+                    val beer = res.data
 
                     Log.d(TAG, "Get beer ${beer.name} success")
 
                     tvBeerName.text = beer.name
                     tvBreweryName.text = beer.brewery.name
                     val addressLine = "${beer.brewery.address}, ${beer.brewery.city} " +
-                            "${beer.brewery.country}" // FIXME: 08/11/2020
+                            beer.brewery.country
                     tvBreweryAddress.text = addressLine
 
 
@@ -119,8 +119,8 @@ class BeerDetailFragment : Fragment() {
                         btnShowMap.visibility = View.VISIBLE
                         btnShowMap.setOnClickListener {
                             val action = BeerDetailFragmentDirections.actionBeersDetailFragmentToBreweryMapFragment(
-                                    Util.convertLocationToLong(location!!.latitude),
-                                    Util.convertLocationToLong(location!!.longitude),
+                                    Util.convertLocationToLong(location.latitude),
+                                    Util.convertLocationToLong(location.longitude),
                                     beer.brewery.name)
                             findNavController().navigate(action)
                         }
@@ -145,7 +145,9 @@ class BeerDetailFragment : Fragment() {
             location.longitude = addresses[0].longitude
             location
         } catch (e: Exception) {
-            Log.e(TAG, e.message)
+            if (e.message != null) {
+                Log.e(TAG, e.message!!)
+            }
             null
         }
     }
@@ -154,6 +156,7 @@ class BeerDetailFragment : Fragment() {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.rating_dialog, null)
         val ratingBar = dialogView.findViewById<View>(R.id.rating) as RatingBar
         var rating = 0.0F
+
 
         ratingBar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener {
             p0: RatingBar?, p1: Float, p2: Boolean -> rating = p1
@@ -186,8 +189,8 @@ class BeerDetailFragment : Fragment() {
                 Log.d(TAG, "Update rating call success")
 
                 if (response?.code() == 200) {
-                    val response = response.body() as ResponseWrapper<Beer>
-                    val beer = response.data
+                    val res = response.body() as ResponseWrapper<Beer>
+                    val beer = res.data
                     rbBeer.rating = if (beer.rating == null) 0.0F else beer.rating!!.toFloat()
                     Toast.makeText(context, "Thank you for rating ${beer.name}!", Toast.LENGTH_LONG).show()
                 }

@@ -22,7 +22,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.qualifiedName
 
@@ -41,21 +41,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val navController: NavController = findNavController(R.id.fragment)
         appBarConfiguration =
-                // TODO: 06/11/2020 fix deprecated code
                 AppBarConfiguration.Builder(R.id.beersFragment)
-                        .setDrawerLayout(drawerLayout)
+                        .setOpenableLayout(drawerLayout)
                         .build()
         setupActionBarWithNavController(navController, appBarConfiguration)
         findViewById<NavigationView>(R.id.nav_view)
                 .setupWithNavController(navController)
-
-        // Get the SupportMapFragment and request notification when the map is ready to be used.
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
-        mapFragment?.getMapAsync(this)
-
-//        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-//        val googleMap = mapFragment.awaitMap()
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -68,17 +59,5 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 .apply {
                     setStatusBarBackground(R.color.brown_600)
                 }
-    }
-
-    override fun onMapReady(googleMap: GoogleMap?) {
-        Log.d(TAG, "onMapReady called")
-        googleMap?.apply {
-            val sydney = LatLng(-33.852, 151.211)
-            addMarker(
-                MarkerOptions()
-                    .position(sydney)
-                    .title("Marker in Sydney")
-            )
-        }
     }
 }

@@ -13,6 +13,7 @@ import be.tim.beers.R
 import be.tim.beers.data.*
 import be.tim.beers.data.local.SessionManager
 import be.tim.beers.data.remote.ApiClient
+import be.tim.beers.data.remote.ResponseWrapper
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -128,8 +129,8 @@ class BeersFragment : Fragment() {
 
             override fun onResponse(call: Call<ResponseWrapper<LoginData>>?, response: Response<ResponseWrapper<LoginData>>?) {
                 if (response?.code() == 200) {
-                    val response = response.body() as ResponseWrapper<LoginData>
-                    val token = response.data.accessToken
+                    val res = response.body() as ResponseWrapper<LoginData>
+                    val token = res.data.accessToken
                     Log.d(TAG, "Login success with token: $token")
 
                     sessionManager.saveAuthToken(token)
@@ -153,8 +154,8 @@ class BeersFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<ResponseWrapper<List<Beer>>>?, response: Response<ResponseWrapper<List<Beer>>>?) {
-                val response = response!!.body() as ResponseWrapper<List<Beer>>
-                val beerData = response.data
+                val res = response!!.body() as ResponseWrapper<List<Beer>>
+                val beerData = res.data
 
                 allBeers = beerData.toMutableList()
                 beers = beerData

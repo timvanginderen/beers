@@ -1,4 +1,4 @@
-package be.tim.beers.beerdetail
+package be.tim.beers.brewery
 
 import android.os.Bundle
 import android.util.Log

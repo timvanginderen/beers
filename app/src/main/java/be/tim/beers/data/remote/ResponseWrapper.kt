@@ -1,4 +1,4 @@
-package be.tim.beers.data
+package be.tim.beers.data.remote
 
 import com.google.gson.annotations.SerializedName
 

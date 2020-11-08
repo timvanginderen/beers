@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/breweryMapFragment"
-        android:name="be.tim.beers.beerdetail.BreweryMapFragment"
+        android:name="be.tim.beers.brewery.BreweryMapFragment"
         android:label="BreweryMapFragment" >
         <argument
             android:name="lat"
